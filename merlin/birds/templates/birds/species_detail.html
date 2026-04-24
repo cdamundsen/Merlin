@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>{{ species.name }} Detail</h3>
+
+    <p>
+        <span class="text-info">Name: </span> <span>{{ species.name }}</span>
+        <br>
+        <span class="text-info">Bionomial: </span><span><i>{{ species.genus.name }} {{ species.species }}</i></span>
+        <br>
+        <span class="text-info">Description: </span><span>{{ species.description }}</span>
+        <br>
+        <span class="text-info">Events: </span><span>{{ species.events.count }}</span>
+        <br>
+        {% if locations %}
+            <h4>Locations</h4>
+            <span>
+                <ul class="list-group">
+                    {% for loc in locations %}
+                         <li class="list-group-item">
+                            <a href="{{ loc.get_absolute_url }}">{{ loc.name }}</a>
+                         </li>
+                    {% endfor %}
+                </ul>
+            </span>
+        {% endif %}
+    </p>
+{% endblock %}

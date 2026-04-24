@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>{{ event.date }} Detail</h3>
+
+    <p>
+        <span class="text-info">Date: </span> <span>{{ event.date }}</span>
+        <br>
+        <span class="text-info">Location: </span><span>{{ event.location.name }}</span>
+        <br>
+        <span class="text-info">Birds detected: </span><span>{{ event.birds.count }}</span>
+        <br>
+        {% if event.birds %}
+            <ul class="list-group">
+                {% for bird in event.birds.all %}
+                    <li class="list-group-item">
+                        <span class="text-info">Name: </span>
+                        <span>
+                            <a href="{{ bird.get_absolute_url }}">{{ bird.name }}</a>
+                        </span>
+                        <br>
+                        <span class="text-info">Bionomial: </span>
+                        <span><i>{{ bird.genus.name }} {{ bird.species }} </i></span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </p>
+{% endblock %}

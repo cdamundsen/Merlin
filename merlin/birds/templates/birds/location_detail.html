@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>{{ location.name }} Detail</h3>
+
+    <p>
+        <span class="text-info">Name: </span> <span>{{ location.name }}</span>
+        <br>
+        <span class="text-info">Events: </span><span>{{ events.count }}</span>
+        <br>
+        <span class="text-info">Description: </span><span>{{ location.description }}</span>
+    </p>
+
+    {% if location.events %}
+        <h4>{{ Events }}</h4>
+        <ul class="list-group">
+            {% for event in location.events.all %}
+                <li class="list-group-item">
+                    <span class="text-info">Date: </span>
+                    <span>
+                        <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
+                    </span>
+                    <br>
+                    <span class="text-info">Birds detected: </span><span>{{ event.birds.count }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

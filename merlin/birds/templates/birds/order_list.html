@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>{{ title }}</h3>
+    <ul class="list-group">
+        {% for thing in things %}
+            <li class="list-group-item">
+                <span class="text-info">Name: </span>
+                <span>
+                     <a href="{{ thing.get_absolute_url }}">{{ thing.name }}</a>
+                </span>
+                <br>
+                <span class="text-info">Description: </span>
+                <span>{{ thing.description|truncatewords:30 }}</span>
+                <br>
+            </li>
+        {% endfor %}
+    </ul>
+<!--
+    <a class="btn btn-primary btn-sm active"
+       role="button"
+       aria-pressed="true"
+       href="/birds/order/">
+        Add Order
+    </a>
+-->
+{% endblock %}

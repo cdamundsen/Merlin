@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>Events</h3>
+    {% if this_month %}
+        <ul class="list-group">
+            {% for event in this_month %}
+                <li class="list-group-item">
+                    <span class="text-info">Date: </span>
+                    <span>
+                        <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
+                    </span>
+                    <br>
+                    <span class="text-info">Location: </span>
+                    <span><a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a></span>
+                    <br>
+                    <span class="text-info">Birds detected: </span>
+                    <span>{{ event.birds.count }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if other_dates %}
+        <br>
+        <h4>Other Months</h4>
+        {% for year, month in other_dates.items %}
+            <h5>{{ year}}</h5>
+                <li class="list-group-item">
+                    {% for month_num, month_name in month.items %}
+                        <a href="{% url "birds:event-list" year month_num %}">{{ month_name }}</a>
+                    {% endfor %}
+                </li>
+        {% endfor %}
+    {% endif %}
+
+<!--
+    <a class="btn btn-primary btn-sm active"
+       role="button"
+       aria-pressed="true"
+       href="/birds/order/">
+        Add Order
+    </a>
+-->
+{% endblock %}

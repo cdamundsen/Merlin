@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>{{ parent_title }} Detail</h3>
+
+    <p>
+        <span class="text-info">Name: </span> <span>{{ parent.name }}</span>
+        <br>
+        <span class="text-info">Families: </span><span>{{ children.count }}</span>
+        <br>
+        <span class="text-info">Description: </span><span>{{ parent.description }}</span>
+    </p>
+
+    {% if children %}
+        <h4>{{ children_title }}</h4>
+        <ul class="list-group">
+            {% for child in children %}
+                <li class="list-group-item">
+                    <span class="text-info">Name: </span>
+                    <span>
+                        <a href="{{ child.get_absolute_url }}">{{ child.name }}</a>
+                    </span>
+                    <br>
+                    <span class="text-info">Descripion: </span><span>{{ child.description|truncatewords:30 }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
