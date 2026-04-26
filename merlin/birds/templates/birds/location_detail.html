@@ -13,17 +13,12 @@
 
     {% if location.events %}
         <h4>{{ Events }}</h4>
-        <ul class="list-group">
-            {% for event in location.events.all %}
-                <li class="list-group-item">
-                    <span class="text-info">Date: </span>
-                    <span>
+            <div class="grid-container">
+                {% for event in location.events.all %}
+                    <div>
                         <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
-                    </span>
-                    <br>
-                    <span class="text-info">Birds detected: </span><span>{{ event.birds.count }}</span>
-                </li>
-            {% endfor %}
-        </ul>
+                    </div>
+                {% endfor %}
+            </div>
     {% endif %}
 {% endblock %}

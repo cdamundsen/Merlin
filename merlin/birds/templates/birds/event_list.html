@@ -1,24 +1,56 @@
 {% extends "base.html" %}
+{% load math_filters %}
 
 {% block content %}
-    <h3>Events</h3>
+    <h3>{{ month_name }} {{ year }} Events</h3>
     {% if this_month %}
-        <ul class="list-group">
-            {% for event in this_month %}
-                <li class="list-group-item">
-                    <span class="text-info">Date: </span>
-                    <span>
-                        <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
-                    </span>
-                    <br>
-                    <span class="text-info">Location: </span>
-                    <span><a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a></span>
-                    <br>
-                    <span class="text-info">Birds detected: </span>
-                    <span>{{ event.birds.count }}</span>
-                </li>
+        <div class="grid-container">
+            <div style="text-align: center; border-radius: 15px 0px 0px 0px; border-left: 2px solid black; border-top: 1px solid black">Sun</div>
+            <div style="text-align: center; border-top: 1px solid black">Mon</div>
+            <div style="text-align: center; border-top: 1px solid black">Tue</div>
+            <div style="text-align: center; border-top: 1px solid black">Wed</div>
+            <div style="text-align: center; border-top: 1px solid black">Thu</div>
+            <div style="text-align: center; border-top: 1px solid black">Fri</div>
+            <div style="text-align: center; border-radius: 0px 15px 0px 0px; border-top: 1px solid black"">Sat</div>
+            {% for empty in start_empty_days %}
+                {% if forloop.first %}
+                    <div style="border-left: 2px solid black">&nbsp</div>
+                {% else %}
+                    <div>&nbsp</div>
+                {% endif %}
             {% endfor %}
-        </ul>
+
+            {% for day, event in this_month.items %}
+                {% with sed=start_empty_days|length column=start_empty_days|length|add:forloop.counter|mod:7 tm=this_month|length %}
+                    {% if column == 1 and  sed|add:tm|subint:forloop.counter <= 7 %}
+                        <div style="border-left: 2px solid black; border-radius: 0px 0px 0px 15px">
+                    {% elif column == 1 %}
+                        <div style="border-left: 2px solid black">
+                    {% else %}
+                        <div>
+                    {% endif %}
+                    {% if event %}
+                        <a href="{{ event.get_absolute_url }}">{{ day }}</a>
+                        <br>
+                        <a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a>
+                        <br>
+                    {% else %}
+                        {{ day }}
+                        <br>
+                        &nbsp;
+                    {% endif %}
+                    </div>
+                {% endwith %}
+            {% endfor %}
+
+            {% for day in end_empty_days %}
+                {% if forloop.last %}
+                    <div style="border-radius: 0px 0px 15px 0px">&nbsp;</div>
+                {% else %}
+                    <div>&nbsp;</div>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
 
     {% if other_dates %}

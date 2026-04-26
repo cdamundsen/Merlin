@@ -6,7 +6,10 @@
     <p>
         <span class="text-info">Date: </span> <span>{{ event.date }}</span>
         <br>
-        <span class="text-info">Location: </span><span>{{ event.location.name }}</span>
+        <span class="text-info">Location: </span>
+        <span>
+            <a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a>
+        </span>
         <br>
         <span class="text-info">Birds detected: </span><span>{{ event.birds.count }}</span>
         <br>

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Event, Family, Genus, Location, Order, Species
-import time
+import calendar, time
 from sortedcontainers import SortedDict
 
 
@@ -107,26 +107,44 @@ def event_list(request, year=None, month=None):
     events = Event.objects.all()
     if not year and not month:
         year, month = time.localtime()[:2]
-    this_month = []
+    month_name = {1: 'January', 2: 'February', 3: 'March', 4: 'April',
+                  5: 'May', 6: 'June', 7: 'July', 8: 'August',
+                  9: 'September', 10:'October', 11:'November', 12: 'December'}[month]
+    first_day, n_days = calendar.monthrange(year, month)
+    first_day = (first_day + 1) % 7 + 1 # Make Sunday the first day of the week and number from 1 to 7
+    month_days = list(range(1, n_days + 1))
+    start_empty_days = list(range(1, first_day))
+    this_month = SortedDict()
     other_dates = SortedDict()
+    n_end_empty_days = 7 - (n_days + len(start_empty_days)) % 7
+    end_empty_days = list(range(1, n_end_empty_days + 1))
 
     for event in events:
         e_year = event.date.year
         e_month = event.date.month
+        e_day = event.date.day
         if e_year == year and e_month == month:
-            this_month.append(event)
+            this_month[e_day] = event
         else:
             if e_year not in other_dates:
                 other_dates[e_year] = SortedDict()
             if e_month not in other_dates[e_year]:
                 other_dates[e_year][e_month] = event.date.strftime("%B")
+    for day in month_days:
+        if day not in this_month:
+            this_month[day] = None
 
     return render(
         request,
         'birds/event_list.html',
         context={
+            'start_empty_days': start_empty_days,
+            'end_empty_days': end_empty_days,
+            'month_days': month_days,
             'this_month': this_month,
             'other_dates': other_dates,
+            'year': year,
+            'month_name': month_name,
         }
     )
 

@@ -10,7 +10,21 @@
         <br>
         <span class="text-info">Description: </span><span>{{ species.description }}</span>
         <br>
-        <span class="text-info">Events: </span><span>{{ species.events.count }}</span>
+        <span class="text-info">Events:</span>
+        <span>
+            {{ species.events.count }}
+            {% if species.events %}
+                <div class="grid-container">
+                    {% for event in species.events.all %}
+                        <div>
+                            <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
+                            <br>
+                            {{ event.location.name }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </span>
         <br>
         {% if locations %}
             <h4>Locations</h4>
